@@ -1,0 +1,27 @@
+
+_init_docker()
+{
+  COMPREPLY=()
+  local cur prev words cword
+  _get_comp_words_by_ref -n : cur prev words cword
+  case "$1" in
+    "dex")
+      command="exec"
+      ;;
+    "diip")
+      command="inspect"
+      ;;
+    *)
+      echo "Error: Unknown alias"
+      exit 1
+      ;;
+  esac
+
+  local completions_func=_docker_${command}
+  declare -F $completions_func >/dev/null && $completions_func
+
+  return 0
+}
+
+complete -F _init_docker dex
+complete -F _init_docker diip
